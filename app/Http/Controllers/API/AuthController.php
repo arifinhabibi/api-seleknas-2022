@@ -17,6 +17,8 @@ class AuthController extends Controller
 
         $user = Society::where($credential)->with('regional')->first();
 
+        $user->makeHidden(['id', 'id_card_number', 'password', 'regional_id']);
+
         if (!$user) {
             # code...
             return response()->json([
@@ -30,5 +32,26 @@ class AuthController extends Controller
 
         return response()->json($user, 200);
 
+    }
+
+
+    // logout
+    public function logout(Request $request){
+        $user = Society::where('login_tokens', $request->token)->first();
+
+        if (!$user) {
+            # code...
+            return response()->json([
+                'message' => 'Invalid token'
+            ], 401);
+        }
+
+        $user->update([
+            'login_tokens' => null
+        ]);
+
+        return response()->json([
+            'message' => 'Logout success'
+        ], 200);
     }
 }

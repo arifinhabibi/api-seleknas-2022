@@ -8,10 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Society extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'societies';
 
+    protected $guarded = [];
+
+    public $timestamps = false;
+
     public function regional(){
-        $this->belongsTo(Regional::class);
+        return $this->belongsTo(Regional::class);
     }
 }
