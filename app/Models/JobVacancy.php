@@ -9,4 +9,17 @@ class JobVacancy extends Model
 {
     use HasFactory;
     protected $table = 'job_vacancies';
+    protected $guarded = [];
+
+    public $timestamps = false;
+
+    public function job_category(){
+        return $this->belongsTo(JobCategory::class);
+    }
+
+    public function available_position(){
+        return $this->hasMany(AvailablePosition::class);
+    }
+
+
 }
