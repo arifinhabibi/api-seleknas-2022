@@ -13,6 +13,8 @@ class JobVacancy extends Model
 
     public $timestamps = false;
 
+    protected $hidden = ['job_category_id'];
+
     public function job_category(){
         return $this->belongsTo(JobCategory::class);
     }
@@ -20,6 +22,4 @@ class JobVacancy extends Model
     public function available_position(){
         return $this->hasMany(AvailablePosition::class);
     }
-
-
 }

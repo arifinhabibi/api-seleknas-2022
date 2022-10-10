@@ -22,7 +22,7 @@ class ValidationController extends Controller
         Validation::create([
             'work_experience' => $request->work_experience,
             'society_id' => $user->id,
-            'job_category_id' => $request->job_category,
+            'job_category_id' => $request->job_category_id,
             'job_position' => $request->job_position,
             'reason_accepted' => $request->reason_accepted
         ]);
@@ -41,7 +41,11 @@ class ValidationController extends Controller
             return ResponseJSON::unauthorized();
         }
 
-        $validation = Validation::where('society_id', $user->id)->first();
+        $validation = Validation::where('society_id', $user->id)->with(['job_category', 'validator'])->first();
+
+        $validation->category = $validation->job_category == null ? null : $validation->job_category ;
+
+        unset($validation->job_category);
 
         return response()->json($validation, 200);
     }
