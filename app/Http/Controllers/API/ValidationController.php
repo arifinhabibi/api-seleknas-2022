@@ -43,9 +43,11 @@ class ValidationController extends Controller
 
         $validation = Validation::where('society_id', $user->id)->with(['job_category', 'validator'])->first();
 
-        $validation->category = $validation->job_category == null ? null : $validation->job_category ;
+        if ($validation->job_category != null) {
+            # code...
+            $validation->category = $validation->job_category;
+        }
 
-        unset($validation->job_category);
 
         return response()->json($validation, 200);
     }

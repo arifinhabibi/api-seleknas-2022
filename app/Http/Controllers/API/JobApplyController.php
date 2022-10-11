@@ -8,6 +8,7 @@ use App\Models\Validation;
 use Illuminate\Http\Request;
 use App\Models\JobApplySociety;
 use App\Models\JobApplyPosition;
+use App\Models\AvailablePosition;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
@@ -59,12 +60,13 @@ class JobApplyController extends Controller
             'job_vacancy_id' => $request->vacancy_id
         ]);
 
-        foreach(json_decode($request->positions) as $position){
+        foreach($request->positions as $position){
+            $position_id =  AvailablePosition::where('position', $position)->first();
             JobApplyPosition::create([
                 'date' => date('Y-m-d'),
                 'society_id' => $user->id,
                 'job_vacancy_id' => $request->vacancy_id,
-                'position_id' => $position,
+                'position_id' => $position_id->id,
                 'job_apply_societies_id' => $jobApplySociety->id
             ]);
 

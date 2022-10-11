@@ -31,8 +31,10 @@ class JobVacancyController extends Controller
     public function jobVacancyDetail(Request $request, $id){
         $user = Society::where('login_tokens', $request->token)->first(); 
 
-        $job_vacancy = JobVacancy::where('id', $id)->with(['job_category', 'available_position'])->get();
+        $job_vacancy = JobVacancy::where('id', $id)->with(['job_category', 'available_position'])->first();
 
-        return response()->json($job_vacancy, 200);
+        return response()->json([
+            'vacancy' =>  $job_vacancy
+        ], 200);
     }
 }
